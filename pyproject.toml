@@ -3,7 +3,7 @@ name = "python_starter_project"
 version = "0.1.0"
 description = "A small template for starting bigger Python-based projects."
 authors = ["Nefendi <28621696+Nefendi@users.noreply.github.com>"]
-license = "MIT"
+license = "The Unlicense"
 
 [tool.poetry.dependencies]
 python = "^3.9"
