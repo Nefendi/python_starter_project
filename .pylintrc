@@ -8,7 +8,6 @@ persistent = yes
 [MESSAGES CONTROL]
 enable =
 	blacklisted-name,
-	line-too-long,
 
 	abstract-class-instantiated,
 	abstract-method,
@@ -157,7 +156,6 @@ enable =
 
 	empty-docstring,
 	invalid-characters-in-docstring,
-	missing-docstring,
 	wrong-spelling-in-comment,
 	wrong-spelling-in-docstring,
 
@@ -254,10 +252,12 @@ disable =
 	fixme,
 	global-statement,
 	invalid-name,
+	line-too-long,
 	locally-disabled,
 	locally-enabled,
 	lowercase-l-suffix,
 	misplaced-comparison-constant,
+	missing-docstring,
 	no-else-return,
 	no-init,
 	no-self-use,
