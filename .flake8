@@ -3,6 +3,9 @@ max-line-length = 88
 max-complexity = 10
 select = C,E,F,W,B,B9
 extend-ignore =
-    E203, # whitespace before ':', non-compliant with PEP8 and Black
-    E501, # line length, ignored because B950 from flake8-bugbear takes care of that
-    W503  # line break before binary operator, non-compliant with PEP8
+    # whitespace before ':', non-compliant with PEP8 and Black
+    E203,
+    # line length, ignored because B950 from flake8-bugbear takes care of that
+    E501,
+    # line break before binary operator, non-compliant with PEP8
+    W503
