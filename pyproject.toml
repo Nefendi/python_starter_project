@@ -439,7 +439,6 @@ disable = [
     "useless-suppression",
     "deprecated-pragma",
     "use-symbolic-message-instead",
-    "invalid-name",
     "missing-module-docstring",
     "missing-class-docstring",
     "missing-function-docstring",
