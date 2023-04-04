@@ -20,6 +20,7 @@ isort = "^5.12.0"
 pylint-pytest = "^1.1.2"
 pytest-randomly = "^3.12.0"
 assertpy = "^1.1"
+flake8-pyproject = "^1.2.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -51,6 +52,19 @@ profile = "black"
 show_column_numbers = true
 pretty = true
 strict = true
+
+[tool.flake8]
+max-line-length = 80
+max-complexity = 12
+select = ["C", "E", "F", "W", "B", "B9"]
+extend-ignore = [
+    # whitespace before ':', non-compliant with PEP8 and Black
+    "E203",
+    # line length, ignored because B950 from flake8-bugbear takes care of that
+    "E501",
+    # line break before binary operator, non-compliant with PEP8
+    "W503",
+]
 
 [tool.pylint.main]
 # Analyse import fallback blocks. This can be used to support both Python 2 and 3
