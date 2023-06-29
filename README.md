@@ -19,6 +19,8 @@ The packages included are:
 - pre_commit
 - isort
 
+...and a few more (check **pyproject.toml** for a detailed list).
+
 Configurations for the aforementioned tools were defined in the separate files
 or, if it was possible, in the **pyproject.toml**.
 
