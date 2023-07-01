@@ -1,0 +1,9 @@
+---
+services:
+  db:
+    image: docker.io/postgres:15
+    environment:
+      - POSTGRES_USER=python-starter-project
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
