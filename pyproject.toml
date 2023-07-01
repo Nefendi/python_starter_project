@@ -41,6 +41,8 @@ pytest-asyncio = "^0.21.0"
 tavern = "^2.2.0"
 snakeviz = "^2.2.0"
 httpx = "^0.24.1"
+freezegun = "^1.2.2"
+pytest-mockito = "^0.0.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
