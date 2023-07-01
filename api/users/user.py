@@ -1,0 +1,65 @@
+from typing import Annotated, Any
+from uuid import UUID
+
+from fastapi import APIRouter, Depends, status
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
+
+from api.db import db_session
+from api.ioc import lagom_depends
+from user.facade import UserFacade
+
+router = APIRouter(prefix="/users")
+
+
+class UserBase(BaseModel):
+    name: str
+    surname: str
+
+
+class UserIn(UserBase):
+    pass
+
+
+class UserOut(UserBase):
+    id: UUID
+
+    class Config:
+        orm_mode = True
+
+
+@router.get(
+    "/{id}",
+    response_model=UserOut,
+    status_code=status.HTTP_200_OK,
+    responses={
+        status.HTTP_404_NOT_FOUND: {"description": "The user has not been found"}
+    },
+)
+def get_user_by_id(
+    id: UUID,
+    user_facade: Annotated[UserFacade, lagom_depends(UserFacade)],
+) -> Any:
+    user = user_facade.get_by_id(id)
+
+    return user
+
+
+@router.get("/", response_model=list[UserOut], status_code=status.HTTP_200_OK)
+def get_all_users(user_facade: Annotated[UserFacade, lagom_depends(UserFacade)]) -> Any:
+    users = user_facade.get_all()
+
+    return users
+
+
+@router.post("/", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+def add_new_user(
+    payload: UserIn,
+    user_facade: Annotated[UserFacade, lagom_depends(UserFacade)],
+    session: Annotated[Session, Depends(db_session)],
+) -> Any:
+    new_user = user_facade.add(name=payload.name, surname=payload.surname)
+
+    session.commit()
+
+    return new_user
