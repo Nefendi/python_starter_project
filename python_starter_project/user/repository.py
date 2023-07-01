@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 from typing import Iterator
 from uuid import UUID
 
-from database.db import ScopedSession
-from user.entity import User
-from user.exceptions import NoUserFoundException
-from user.model import UserModel
+from python_starter_project.database.db import ScopedSession
+from python_starter_project.user.entity import User
+from python_starter_project.user.exceptions import NoUserFoundException
+from python_starter_project.user.model import UserModel
 
 
 class UserRepositoryInterface(ABC):

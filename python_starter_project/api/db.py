@@ -2,7 +2,7 @@ from typing import Iterator
 
 from sqlalchemy.orm import Session
 
-from database.db import get_session
+from python_starter_project.database.db import get_session
 
 
 def db_session() -> Iterator[Session]:

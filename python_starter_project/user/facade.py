@@ -3,8 +3,8 @@ from uuid import UUID, uuid4
 
 from attrs import define
 
-from user.entity import User
-from user.repository import UserRepositoryInterface
+from python_starter_project.user.entity import User
+from python_starter_project.user.repository import UserRepositoryInterface
 
 
 @define

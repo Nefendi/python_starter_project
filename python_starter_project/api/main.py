@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
-from api.users.exception_handlers import add_users_exception_handlers
-from api.users.user import router as user_router
-from shared.domain_exception import DomainException
+from python_starter_project.api.users.exception_handlers import (
+    add_users_exception_handlers,
+)
+from python_starter_project.api.users.user import router as user_router
+from python_starter_project.shared.domain_exception import DomainException
 
 app = FastAPI()
 

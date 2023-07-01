@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from api.db import db_session
-from api.ioc import lagom_depends
-from user.facade import UserFacade
+from python_starter_project.api.db import db_session
+from python_starter_project.api.ioc import lagom_depends
+from python_starter_project.user.facade import UserFacade
 
 router = APIRouter(prefix="/users")
 

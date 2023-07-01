@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, status
 from fastapi.responses import JSONResponse
 
-from user.exceptions import NoUserFoundException
+from python_starter_project.user.exceptions import NoUserFoundException
 
 
 def add_users_exception_handlers(app: FastAPI) -> None:
