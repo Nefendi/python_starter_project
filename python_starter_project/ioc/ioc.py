@@ -7,4 +7,4 @@ from python_starter_project.user.repository import (
 
 container = Container()
 
-container[UserRepositoryInterface] = UserPostgresRepository
+container[UserRepositoryInterface] = UserPostgresRepository  # type: ignore[type-abstract]

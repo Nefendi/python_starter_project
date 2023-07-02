@@ -13,7 +13,7 @@ sqlalchemy = "^2.0.17"
 alembic = "^1.11.1"
 fastapi = "^0.99.0"
 psycopg2-binary = "^2.9.6"
-uvicorn = {extras = ["standard"], version = "^0.22.0"}
+uvicorn = { extras = ["standard"], version = "^0.22.0" }
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"
@@ -43,6 +43,7 @@ snakeviz = "^2.2.0"
 httpx = "^0.24.1"
 freezegun = "^1.2.2"
 pytest-mockito = "^0.0.4"
+pylint-pydantic = "^0.1.8"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -76,7 +77,7 @@ pretty = true
 strict = true
 
 [tool.flake8]
-max-line-length = 80
+max-line-length = 100
 max-complexity = 12
 select = ["C", "E", "F", "W", "B", "B9", "PT"]
 extend-ignore = [
@@ -87,6 +88,7 @@ extend-ignore = [
     # line break before binary operator, non-compliant with PEP8
     "W503",
 ]
+per-file-ignores = ["*/alembic/env.py:F401", "*/alembic/versions/*:W291"]
 
 [tool.pylint.main]
 # Analyse import fallback blocks. This can be used to support both Python 2 and 3
@@ -111,7 +113,7 @@ extend-ignore = [
 # be loaded. Extensions are loading into the active Python interpreter and may
 # run arbitrary code. (This is an alternative name to extension-pkg-allow-list
 # for backward compatibility.)
-# extension-pkg-whitelist =
+extension-pkg-whitelist = ["pydantic"]
 
 # Return non-zero exit code if any of these messages/categories are detected,
 # even if score is above --fail-under value. Syntax same as enable. Messages
@@ -161,7 +163,7 @@ limit-inference-results = 100
 
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
-load-plugins = ["pylint_pytest"]
+load-plugins = ["pylint_pytest", "pylint_pydantic"]
 
 # Pickle collected data for later comparisons.
 persistent = true
@@ -246,7 +248,7 @@ function-naming-style = "snake_case"
 # function-rgx =
 
 # Good variable names which should always be accepted, separated by a comma.
-good-names = ["i", "j", "k", "ex", "Run", "_"]
+good-names = ["i", "j", "k", "ex", "Run", "_", "id"]
 
 # Good variable names regexes, separated by a comma. If names match any regex,
 # they will always be accepted
@@ -354,7 +356,7 @@ max-returns = 6
 max-statements = 50
 
 # Minimum number of public methods for a class (see R0903).
-min-public-methods = 2
+min-public-methods = 0
 
 [tool.pylint.exceptions]
 # Exceptions that will emit a warning when caught.
@@ -375,7 +377,7 @@ indent-after-paren = 4
 indent-string = "    "
 
 # Maximum number of characters on a single line.
-max-line-length = 88
+max-line-length = 100
 
 # Maximum number of lines in a module.
 max-module-lines = 1000
@@ -627,7 +629,7 @@ mixin-class-rgx = ".*[Mm]ixin"
 allow-global-unused-variables = true
 
 # List of names allowed to shadow builtins
-# allowed-redefined-builtins =
+allowed-redefined-builtins = ["id"]
 
 # List of strings which can identify a callback function by name. A callback name
 # must start or end with one of those strings.
@@ -651,6 +653,7 @@ redefining-builtins-modules = [
     "future.builtins",
     "builtins",
     "io",
+
 ]
 
 
