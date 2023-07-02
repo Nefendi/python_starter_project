@@ -4,7 +4,7 @@ from typing import Iterator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, scoped_session, sessionmaker
 
-from python_starter_project.database.settings import DbSettings
+from .settings import DbSettings
 
 engine = create_engine(DbSettings().URL)
 

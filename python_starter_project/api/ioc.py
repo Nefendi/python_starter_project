@@ -2,7 +2,7 @@ from typing import Any, TypeVar, cast
 
 from fastapi import Depends, Request
 
-from python_starter_project.ioc.ioc import container
+from python_starter_project.ioc import container
 
 # NOTE: FastAPI integration from lagom can also be used:
 # from lagom.integrations.fast_api import FastApiIntegration

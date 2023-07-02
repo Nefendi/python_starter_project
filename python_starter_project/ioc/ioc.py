@@ -1,9 +1,6 @@
 from lagom import Container
 
-from python_starter_project.user.repository import (
-    UserPostgresRepository,
-    UserRepositoryInterface,
-)
+from python_starter_project.user import UserPostgresRepository, UserRepositoryInterface
 
 container = Container()
 

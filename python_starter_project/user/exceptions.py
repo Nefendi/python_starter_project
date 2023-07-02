@@ -1,4 +1,4 @@
-from python_starter_project.shared.domain_exception import DomainException
+from python_starter_project.shared import DomainException
 
 
 class NoUserFoundException(DomainException):
