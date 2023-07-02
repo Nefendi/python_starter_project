@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from python_starter_project.api.db import db_session
-from python_starter_project.api.ioc import lagom_depends
+from python_starter_project.api.ioc import Inject
 from python_starter_project.user.facade import UserFacade
 
 router = APIRouter(prefix="/users")
@@ -38,7 +38,7 @@ class UserOut(UserBase):
 )
 def get_user_by_id(
     id: UUID,
-    user_facade: Annotated[UserFacade, lagom_depends(UserFacade)],
+    user_facade: Annotated[UserFacade, Inject(UserFacade)],
 ) -> Any:
     user = user_facade.get_by_id(id)
 
@@ -46,7 +46,7 @@ def get_user_by_id(
 
 
 @router.get("/", response_model=list[UserOut], status_code=status.HTTP_200_OK)
-def get_all_users(user_facade: Annotated[UserFacade, lagom_depends(UserFacade)]) -> Any:
+def get_all_users(user_facade: Annotated[UserFacade, Inject(UserFacade)]) -> Any:
     users = user_facade.get_all()
 
     return users
@@ -55,7 +55,7 @@ def get_all_users(user_facade: Annotated[UserFacade, lagom_depends(UserFacade)])
 @router.post("/", response_model=UserOut, status_code=status.HTTP_201_CREATED)
 def add_new_user(
     payload: UserIn,
-    user_facade: Annotated[UserFacade, lagom_depends(UserFacade)],
+    user_facade: Annotated[UserFacade, Inject(UserFacade)],
     session: Annotated[Session, Depends(db_session)],
 ) -> Any:
     new_user = user_facade.add(name=payload.name, surname=payload.surname)
