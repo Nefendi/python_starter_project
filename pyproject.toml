@@ -82,6 +82,9 @@ init_typed = true
 warn_required_dynamic_aliases = true
 warn_untyped_fields = true
 
+[tool.pytest.ini_options]
+addopts = "-n auto"
+
 [tool.coverage.report]
 exclude_lines = ["@abstractmethod", "@abc.abstractmethod"]
 show_missing = true
