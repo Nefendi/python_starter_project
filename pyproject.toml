@@ -73,7 +73,7 @@ strict = true
 plugins = ["pydantic.mypy"]
 
 [[tool.mypy.overrides]]
-module = ["assertpy.*", "factory.*"]
+module = ["assertpy.*", "factory.*", "testcontainers.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]
