@@ -39,7 +39,7 @@ snakeviz = "^2.2.0"
 httpx = "^0.24.1"
 freezegun = "^1.2.2"
 pytest-mockito = "^0.0.4"
-ruff = "^0.1.6"
+ruff = "^0.3.0"
 testcontainers = "^3.7.1"
 pytest-xdist = "^3.5.0"
 
