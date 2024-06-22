@@ -35,11 +35,11 @@ pytest-bdd = "^6.1.1"
 import-linter = "^1.9.0"
 pytest-asyncio = "^0.21.0"
 tavern = "^2.2.0"
+ruff = "^0.4.9"
 snakeviz = "^2.2.0"
 httpx = "^0.24.1"
 freezegun = "^1.2.2"
 pytest-mockito = "^0.0.4"
-ruff = "^0.3.0"
 testcontainers = "^3.7.1"
 pytest-xdist = "^3.5.0"
 
@@ -47,7 +47,7 @@ pytest-xdist = "^3.5.0"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.ruff]
+[tool.ruff.lint]
 select = ["C", "E", "F", "W", "B", "B9", "PT", "I", "UP", "PL"]
 ignore = [
     # whitespace before ':', non-compliant with PEP8 and Black
@@ -56,13 +56,13 @@ ignore = [
     "E501",
 ]
 
-[tool.ruff.pycodestyle]
+[tool.ruff.lint.pycodestyle]
 max-line-length = 100
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 12
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "*/alembic/env.py" = ["F401"]
 "*/alembic/versions/*" = ["W291"]
 
