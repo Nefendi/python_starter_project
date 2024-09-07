@@ -7,16 +7,18 @@ license = "The Unlicense"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+pydantic = "^2.8.2"
 lagom = "^2.4.1"
 attrs = "^23.1.0"
 sqlalchemy = "^2.0.17"
 alembic = "^1.11.1"
-fastapi = "^0.99.0"
+fastapi = "^0.112.0"
 psycopg2-binary = "^2.9.6"
 uvicorn = { extras = ["standard"], version = "^0.22.0" }
 tenacity = "^8.2.2"
 pendulum = "^3.0.0"
 loguru = "^0.7.2"
+pydantic-settings = "^2.4.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.0.1"

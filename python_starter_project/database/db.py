@@ -6,7 +6,7 @@ from sqlalchemy.orm import DeclarativeBase, Session, scoped_session, sessionmake
 
 from .settings import DbSettings
 
-engine = create_engine(DbSettings().URL)
+engine = create_engine(str(DbSettings().URL))
 
 session_factory = sessionmaker(bind=engine)
 

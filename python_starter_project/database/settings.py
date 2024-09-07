@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 # An ugly workaround for this: https://github.com/pydantic/pydantic/issues/1490
 if TYPE_CHECKING:
