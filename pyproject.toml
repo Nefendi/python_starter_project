@@ -8,7 +8,7 @@ license = "The Unlicense"
 [tool.poetry.dependencies]
 python = "^3.12"
 pydantic = "^2.8.2"
-lagom = "^2.4.1"
+lagom = "^2.6.0"
 attrs = "^23.1.0"
 sqlalchemy = "^2.0.17"
 alembic = "^1.11.1"
