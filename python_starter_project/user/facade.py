@@ -1,4 +1,4 @@
-from typing import Iterator
+from collections.abc import Iterator
 from uuid import UUID, uuid4
 
 from attrs import define

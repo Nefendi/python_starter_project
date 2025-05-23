@@ -1,6 +1,6 @@
 import os
 import pathlib
-from typing import Iterator
+from collections.abc import Iterator
 
 import alembic.command
 import alembic.config
@@ -13,7 +13,7 @@ from python_starter_project.api.main import app
 from python_starter_project.database import session_factory
 
 
-@pytest.fixture()
+@pytest.fixture
 def client() -> TestClient:
     return TestClient(app)
 
@@ -61,7 +61,6 @@ def _setup_test_database() -> Iterator[None]:
 # @pytest.fixture(scope="session", autouse=True)
 # def _setup_test_database() -> Iterator[None]:
 #     if (prod_db_url := engine.url.database) is None:
-#         # pylint: disable=broad-exception-raised
 #         raise Exception(
 #             "There is something wrong with the engine for production database!"
 #         )

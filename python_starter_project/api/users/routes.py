@@ -2,7 +2,7 @@ from typing import Annotated, Any
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
 
 from python_starter_project.user import UserFacade
@@ -23,10 +23,9 @@ class UserIn(UserBase):
 
 
 class UserOut(UserBase):
-    id: UUID
+    model_config = ConfigDict(from_attributes=True)
 
-    class Config:
-        orm_mode = True
+    id: UUID
 
 
 @router.get(

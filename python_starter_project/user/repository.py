@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Iterator
+from collections.abc import Iterator
 from uuid import UUID
 
 from python_starter_project.database import ScopedSession
