@@ -35,16 +35,16 @@ dev = [
   "mutmut>=2.4.3,<3",
   "gitlint>=0.19.1,<0.20",
   "pytest-bdd>=6.1.1,<7",
-  "import-linter>=1.9.0,<2",
   "pytest-asyncio>=0.21.0,<0.22",
   "tavern>=2.2.0,<3",
   "snakeviz>=2.2.0,<3",
   "httpx>=0.24.1,<0.25",
-  "freezegun>=1.2.2,<2",
   "pytest-mockito>=0.0.4,<0.0.5",
   "testcontainers>=3.7.1,<4",
   "pytest-xdist>=3.5.0,<4",
   "ruff>=0.11.11",
+  "time-machine>=2.19.0",
+  "tach>=0.29.0",
 ]
 
 [build-system]
