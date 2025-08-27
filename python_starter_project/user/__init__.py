@@ -1,4 +1,5 @@
-from .entity import User
+from .dto import UserDTO
+from .entity import User, UserId
 from .exceptions import NoUserFoundException
 from .facade import UserFacade
 from .model import UserModel
@@ -11,4 +12,6 @@ __all__ = [
     "UserPostgresRepository",
     "UserFacade",
     "NoUserFoundException",
+    "UserId",
+    "UserDTO"
 ]

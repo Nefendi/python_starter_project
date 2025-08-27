@@ -1,12 +1,11 @@
 from abc import ABC, abstractmethod
 from typing import override
-from uuid import UUID
 
 from sqlalchemy import select
 
 from python_starter_project.database import ScopedSession
 
-from .entity import User
+from .entity import User, UserId
 from .exceptions import NoUserFoundException
 from .model import UserModel
 
@@ -17,7 +16,7 @@ class UserRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_by_id(self, id: UUID) -> User:
+    def get_by_id(self, id: UserId) -> User:
         pass
 
     @abstractmethod
@@ -36,10 +35,10 @@ class UserPostgresRepository(UserRepositoryInterface):
         session.flush([user_to_add])
 
     @override
-    def get_by_id(self, id: UUID) -> User:
+    def get_by_id(self, id: UserId) -> User:
         session = ScopedSession()
 
-        stmt = select(UserModel).where(UserModel.id == id)
+        stmt = select(UserModel).where(UserModel.id == id.as_uuid)
 
         retrieved_user = session.scalar(stmt)
 
@@ -59,11 +58,11 @@ class UserPostgresRepository(UserRepositoryInterface):
         return [self._model_to_entity(user) for user in retrieved_users]
 
     def _entity_to_model(self, entity: User) -> UserModel:
-        return UserModel(id=entity.id, name=entity.name, surname=entity.surname)
+        return UserModel(id=entity.id.as_uuid, name=entity.name, surname=entity.surname)
 
     def _model_to_entity(self, model: UserModel) -> User:
         return User(
-            id=model.id,
+            id=UserId(model.id),
             name=model.name,
             surname=model.surname,
         )

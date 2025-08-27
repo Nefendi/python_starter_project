@@ -1,11 +1,11 @@
-from typing import Annotated, Any
+from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
 
-from python_starter_project.user import UserFacade
+from python_starter_project.user import UserDTO, UserFacade, UserId
 
 from ..db import db_session
 from ..ioc import Inject
@@ -39,14 +39,14 @@ class UserOut(UserBase):
 def get_user_by_id(
     id: UUID,
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
-) -> Any:
-    user = user_facade.get_by_id(id)
+) -> UserDTO:
+    user = user_facade.get_by_id(UserId(id))
 
     return user
 
 
 @router.get("/", response_model=list[UserOut], status_code=status.HTTP_200_OK)
-def get_all_users(user_facade: Annotated[UserFacade, Inject(UserFacade)]) -> Any:
+def get_all_users(user_facade: Annotated[UserFacade, Inject(UserFacade)]) -> list[UserDTO]:
     users = user_facade.get_all()
 
     return users
@@ -57,7 +57,7 @@ def add_new_user(
     payload: UserIn,
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
     session: Annotated[Session, Depends(db_session)],
-) -> Any:
+) -> UserDTO:
     new_user = user_facade.add(name=payload.name, surname=payload.surname)
 
     session.commit()

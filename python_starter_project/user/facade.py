@@ -1,8 +1,7 @@
-from uuid import UUID, uuid4
-
 from attrs import define
 
-from .entity import User
+from .dto import UserDTO
+from .entity import User, UserId
 from .repository import UserRepositoryInterface
 
 
@@ -10,15 +9,15 @@ from .repository import UserRepositoryInterface
 class UserFacade:
     _repository: UserRepositoryInterface
 
-    def add(self, name: str, surname: str) -> User:
-        user = User(id=uuid4(), name=name, surname=surname)
+    def add(self, name: str, surname: str) -> UserDTO:
+        user = User(id=UserId.new_one(), name=name, surname=surname)
 
         self._repository.add(user)
 
-        return user
+        return UserDTO.of(user)
 
-    def get_by_id(self, id: UUID) -> User:
-        return self._repository.get_by_id(id=id)
+    def get_by_id(self, id: UserId) -> UserDTO:
+        return UserDTO.of(self._repository.get_by_id(id=id))
 
-    def get_all(self) -> list[User]:
-        return self._repository.get_all()
+    def get_all(self) -> list[UserDTO]:
+        return [UserDTO.of(user) for user in self._repository.get_all()]
