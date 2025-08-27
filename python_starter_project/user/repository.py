@@ -43,7 +43,7 @@ class UserPostgresRepository(UserRepositoryInterface):
         retrieved_user = session.scalar(stmt)
 
         if not retrieved_user:
-            raise NoUserFoundException()
+            raise NoUserFoundException(id)
 
         return self._model_to_entity(retrieved_user)
 
