@@ -6,7 +6,7 @@ from assertpy import assert_that
 from python_starter_project.user import User
 
 
-class UserFactory(factory.Factory):  # type: ignore[misc]
+class UserFactory(factory.Factory):  # type: ignore[misc, name-defined]
     class Meta:
         model = User
 

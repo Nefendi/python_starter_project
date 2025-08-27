@@ -1,4 +1,3 @@
-from collections.abc import Iterator
 from uuid import UUID, uuid4
 
 from attrs import define
@@ -21,5 +20,5 @@ class UserFacade:
     def get_by_id(self, id: UUID) -> User:
         return self._repository.get_by_id(id=id)
 
-    def get_all(self) -> Iterator[User]:
+    def get_all(self) -> list[User]:
         return self._repository.get_all()

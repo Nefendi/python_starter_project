@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
-from collections.abc import Iterator
+from typing import override
 from uuid import UUID
+
+from sqlalchemy import select
 
 from python_starter_project.database import ScopedSession
 
@@ -19,36 +21,42 @@ class UserRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_all(self) -> Iterator[User]:
+    def get_all(self) -> list[User]:
         pass
 
 
 class UserPostgresRepository(UserRepositoryInterface):
+    @override
     def add(self, user: User) -> None:
         session = ScopedSession()
 
         user_to_add = self._entity_to_model(user)
-        session.add(user_to_add)
-        # session.flush()
 
+        session.add(user_to_add)
+        session.flush([user_to_add])
+
+    @override
     def get_by_id(self, id: UUID) -> User:
         session = ScopedSession()
 
-        retrieved_user: UserModel | None = (
-            session.query(UserModel).filter_by(id=id).first()
-        )
+        stmt = select(UserModel).where(UserModel.id == id)
+
+        retrieved_user = session.scalar(stmt)
 
         if not retrieved_user:
             raise NoUserFoundException()
 
         return self._model_to_entity(retrieved_user)
 
-    def get_all(self) -> Iterator[User]:
+    @override
+    def get_all(self) -> list[User]:
         session = ScopedSession()
 
-        retrieved_users = session.query(UserModel).all()
+        stmt = select(UserModel)
 
-        return (self._model_to_entity(user) for user in retrieved_users)
+        retrieved_users = session.scalars(stmt)
+
+        return [self._model_to_entity(user) for user in retrieved_users]
 
     def _entity_to_model(self, entity: User) -> UserModel:
         return UserModel(id=entity.id, name=entity.name, surname=entity.surname)
