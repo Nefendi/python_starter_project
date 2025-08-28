@@ -3,15 +3,16 @@ from .entity import User, UserId
 from .exceptions import NoUserFoundException
 from .facade import UserFacade
 from .model import UserModel
-from .repository import UserPostgresRepository, UserRepositoryInterface
+from .postgres_repository import UserPostgresRepository
+from .repository import UserRepository
 
 __all__ = [
     "User",
     "UserModel",
-    "UserRepositoryInterface",
+    "UserRepository",
     "UserPostgresRepository",
     "UserFacade",
     "NoUserFoundException",
     "UserId",
-    "UserDTO"
+    "UserDTO",
 ]

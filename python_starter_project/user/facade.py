@@ -3,12 +3,12 @@ from attrs import define
 from ..database import transactional
 from .dto import UserDTO
 from .entity import User, UserId
-from .repository import UserRepositoryInterface
+from .repository import UserRepository
 
 
 @define
 class UserFacade:
-    _repository: UserRepositoryInterface
+    _repository: UserRepository
 
     @transactional
     def add(self, name: str, surname: str) -> UserDTO:
