@@ -1,11 +1,13 @@
-from .db import Base, ScopedSession, engine, get_session, session_factory
+from .base_repository import BaseRepository
+from .db import Base, get_session, session_factory
 from .settings import DbSettings
+from .transaction import transactional
 
 __all__ = [
-    "engine",
-    "session_factory",
     "get_session",
     "DbSettings",
     "Base",
-    "ScopedSession",
+    "BaseRepository",
+    "transactional",
+    "session_factory",
 ]

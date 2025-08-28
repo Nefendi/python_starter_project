@@ -1,27 +1,23 @@
-from collections.abc import Iterator
-from contextlib import contextmanager
+# NOTE: Taken from https://ryan-zheng.medium.com/simplifying-database-interactions-in-python-with-the-repository-pattern-and-sqlalchemy-22baecae8d84
+
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import DeclarativeBase, Session, scoped_session, sessionmaker
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Session,
+    sessionmaker,
+)
 
 from .settings import DbSettings
 
-engine = create_engine(str(DbSettings().URL))
+_engine = create_engine(str(DbSettings().URL))
 
-session_factory = sessionmaker(bind=engine)
+session_factory = sessionmaker(bind=_engine, autoflush=False, expire_on_commit=False)
 
-ScopedSession = scoped_session(session_factory)
+
+def get_session() -> Session:
+    return session_factory()
 
 
 class Base(DeclarativeBase):
     pass
-
-
-@contextmanager
-def get_session() -> Iterator[Session]:
-    session = ScopedSession()
-
-    try:
-        yield session
-    finally:
-        ScopedSession.remove()

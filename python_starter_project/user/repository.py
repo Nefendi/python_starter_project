@@ -3,8 +3,7 @@ from typing import override
 
 from sqlalchemy import select
 
-from python_starter_project.database import ScopedSession
-
+from ..database import BaseRepository
 from .entity import User, UserId
 from .exceptions import NoUserFoundException
 from .model import UserModel
@@ -24,23 +23,19 @@ class UserRepositoryInterface(ABC):
         pass
 
 
-class UserPostgresRepository(UserRepositoryInterface):
+class UserPostgresRepository(UserRepositoryInterface, BaseRepository):
     @override
     def add(self, user: User) -> None:
-        session = ScopedSession()
-
         user_to_add = self._entity_to_model(user)
 
-        session.add(user_to_add)
-        session.flush([user_to_add])
+        self.session.add(user_to_add)
+        self.session.flush([user_to_add])
 
     @override
     def get_by_id(self, id: UserId) -> User:
-        session = ScopedSession()
-
         stmt = select(UserModel).where(UserModel.id == id.as_uuid)
 
-        retrieved_user = session.scalar(stmt)
+        retrieved_user = self.session.scalar(stmt)
 
         if not retrieved_user:
             raise NoUserFoundException(id)
@@ -49,11 +44,9 @@ class UserPostgresRepository(UserRepositoryInterface):
 
     @override
     def get_all(self) -> list[User]:
-        session = ScopedSession()
-
         stmt = select(UserModel)
 
-        retrieved_users = session.scalars(stmt)
+        retrieved_users = self.session.scalars(stmt)
 
         return [self._model_to_entity(user) for user in retrieved_users]
 

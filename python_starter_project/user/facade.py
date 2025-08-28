@@ -1,5 +1,6 @@
 from attrs import define
 
+from ..database import transactional
 from .dto import UserDTO
 from .entity import User, UserId
 from .repository import UserRepositoryInterface
@@ -9,6 +10,7 @@ from .repository import UserRepositoryInterface
 class UserFacade:
     _repository: UserRepositoryInterface
 
+    @transactional
     def add(self, name: str, surname: str) -> UserDTO:
         user = User(id=UserId.new_one(), name=name, surname=surname)
 
@@ -16,8 +18,10 @@ class UserFacade:
 
         return UserDTO.of(user)
 
+    @transactional
     def get_by_id(self, id: UserId) -> UserDTO:
         return UserDTO.of(self._repository.get_by_id(id=id))
 
+    @transactional
     def get_all(self) -> list[UserDTO]:
         return [UserDTO.of(user) for user in self._repository.get_all()]
