@@ -10,7 +10,7 @@ docker_stop:
     docker compose down
 
 run_migrations:
-    uv run alembic -c python_starter_project/database/alembic.ini upgrade head
+    uv run alembic upgrade head
 
 api:
     uv run -- fastapi dev python_starter_project/api/main.py

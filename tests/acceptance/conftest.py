@@ -43,8 +43,7 @@ def _setup_test_database() -> Iterator[None]:
             os.environ["DB_CONFIG_URL"] = str(testing_db_url).replace("***", password)
 
             script_location = (
-                pathlib.Path(__file__).parent.parent.parent
-                / "python_starter_project/database/alembic/"
+                pathlib.Path(__file__).parent.parent.parent / "migrations/"
             )
 
             config = alembic.config.Config()
@@ -86,7 +85,7 @@ def _setup_test_database() -> Iterator[None]:
 
 #     script_location = (
 #         pathlib.Path(__file__).parent.parent.parent
-#         / "python_starter_project/database/alembic/"
+#         / "migrations"
 #     )
 
 #     config = alembic.config.Config()
