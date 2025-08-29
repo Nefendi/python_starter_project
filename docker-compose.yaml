@@ -7,3 +7,10 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
+  pgadmin:
+    image: docker.io/dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: a@b.c
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "8888:80"
