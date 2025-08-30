@@ -1,31 +1,25 @@
-from uuid import uuid4
-
-import factory
 from assertpy import assert_that
 
-from python_starter_project.user import User
+from python_starter_project.user import User, UserId
 
-
-class UserFactory(factory.Factory):  # type: ignore[misc, name-defined]
-    class Meta:
-        model = User
-
-    id = factory.LazyFunction(uuid4)
-    name = factory.Faker("first_name")
-    surname = factory.Faker("last_name")
+# WARN: Those tests are kind of stupid, but I wanted to show how to
+# unit test very simple things.
 
 
 class TestUsersEquality:
     def test_two_users_with_the_same_id_should_be_equal(self) -> None:
-        id = uuid4()
+        id = UserId.new_one()
 
-        user1 = UserFactory.build(id=id)
-        user2 = UserFactory.build(id=id)
+        user1 = self._user(id=id, name="A", surname="AA")
+        user2 = self._user(id=id, name="B", surname="BB")
 
         assert_that(user1).is_equal_to(user2)
 
     def test_two_users_with_different_ids_should_not_be_equal(self) -> None:
-        user1 = UserFactory.build(name="name", surname="surname")
-        user2 = UserFactory.build(name="name", surname="surname")
+        user1 = self._user(id=UserId.new_one(), name="A", surname="AA")
+        user2 = self._user(id=UserId.new_one(), name="A", surname="AA")
 
         assert_that(user1).is_not_equal_to(user2)
+
+    def _user(self, id: UserId, name: str, surname: str) -> User:
+        return User(id=id, name=name, surname=surname)
