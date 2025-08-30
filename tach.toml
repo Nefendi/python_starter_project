@@ -1,26 +1,27 @@
 interfaces = []
-exclude = ["**/*__pycache__", "**/*egg-info", "**/docs", "**/tests", "**/venv"]
-source_roots = ["."]
-
-[[modules]]
-path = "python_starter_project.ioc"
-depends_on = ["python_starter_project.user"]
-
-[[modules]]
-path = "tests"
-depends_on = []
-
-[[modules]]
-path = "python_starter_project.user"
-depends_on = [
-  "python_starter_project.shared",
-  "python_starter_project.database",
+exclude = [
+    "**/*__pycache__",
+    "**/*egg-info",
+    "**/docs",
+    "**/tests",
+    "**/venv",
+]
+source_roots = [
+    ".",
 ]
 
-[[modules]]
-path = "python_starter_project.database"
-depends_on = ["python_starter_project.user"]
+[[modules ]]
+path = "python_starter_project.user"
+depends_on = ["python_starter_project.shared", "python_starter_project.database"]
 
-[[modules]]
+[[modules ]]
+path = "python_starter_project.api"
+depends_on = ["python_starter_project.user", "python_starter_project.shared"]
+
+[[modules ]]
+path = "python_starter_project.database"
+depends_on = []
+
+[[modules ]]
 path = "python_starter_project.shared"
 depends_on = []
