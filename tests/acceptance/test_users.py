@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+import pytest
 from assertpy import assert_that
 from fastapi import status
 from fastapi.testclient import TestClient
@@ -9,6 +10,7 @@ from fastapi.testclient import TestClient
 # strictly related to CRUD.
 
 
+@pytest.mark.slow
 class TestUsers:
     def test_should_be_able_to_get_created_user(self, client: TestClient) -> None:
         response = client.post("users/", json={"name": "Vernon", "surname": "Vaughn"})

@@ -15,8 +15,14 @@ run_migrations:
 api:
     uv run -- fastapi dev python_starter_project/api/main.py
 
-test:
+test_all:
     uv run pytest
+
+test_fast:
+    uv run pytest -m "not slow"
+
+test_slow:
+    uv run pytest -m slow
 
 coverage:
     uv run pytest --cov --cov-report term --cov-report html

@@ -87,7 +87,8 @@ warn_required_dynamic_aliases = true
 warn_untyped_fields = true
 
 [tool.pytest.ini_options]
-addopts = "-n auto"
+addopts = "--strict-markers -n auto"
+markers = ["slow: marks test as slow"]
 
 [tool.coverage.report]
 exclude_lines = ["@abstractmethod", "@abc.abstractmethod"]
