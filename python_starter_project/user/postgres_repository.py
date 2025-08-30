@@ -1,4 +1,4 @@
-from typing import override
+from typing import TypedDict, override
 
 from sqlalchemy import select, update
 
@@ -7,6 +7,11 @@ from .entity import User, UserId
 from .exceptions import NoUserFoundException
 from .model import UserModel
 from .repository import UserRepository
+
+
+class _UserFieldsToUpdate(TypedDict):
+    name: str
+    surname: str
 
 
 class UserPostgresRepository(UserRepository, BaseRepository):
@@ -18,22 +23,25 @@ class UserPostgresRepository(UserRepository, BaseRepository):
         self.session.flush([user_to_add])
 
     @override
-    def update(self, user: User) -> None:
+    def update(self, user: User) -> User:
         # NOTE: Could be simplified if the entity was an instance of an
         # SQLAlchemy model, but I have separated those two things.
         # This method would be redundant then, because the changes done
         # on the model would automatically get persisted after a transaction
         # has been committed.
-        user_to_update = self._entity_to_model(user)
-
         stmt = (
             update(UserModel)
-            .where(UserModel.id == user_to_update.id)
-            .values(name=user_to_update.name, surname=user_to_update.surname)
+            .where(UserModel.id == user.id.as_uuid)
+            .values(self._fields_to_update(user))
+            .returning(UserModel)
         )
 
-        self.session.execute(stmt)
-        self.session.flush([user_to_update])
+        updated_user = self.session.scalar(stmt)
+
+        if updated_user is None:
+            raise NoUserFoundException(user.id)
+
+        return self._model_to_entity(updated_user)
 
     @override
     def get_by_id(self, user_id: UserId) -> User:
@@ -63,3 +71,6 @@ class UserPostgresRepository(UserRepository, BaseRepository):
             name=model.name,
             surname=model.surname,
         )
+
+    def _fields_to_update(self, entity: User) -> _UserFieldsToUpdate:
+        return _UserFieldsToUpdate(name=entity.name, surname=entity.surname)

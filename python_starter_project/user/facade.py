@@ -25,9 +25,9 @@ class UserFacade:
         user.name = name
         user.surname = surname
 
-        self._repository.update(user)
+        updated_user = self._repository.update(user)
 
-        return UserDTO.of(user)
+        return UserDTO.of(updated_user)
 
     @transactional
     def get_by_id(self, user_id: UserId) -> UserDTO:
