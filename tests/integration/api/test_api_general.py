@@ -6,14 +6,17 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from python_starter_project.shared import DomainException
-from python_starter_project.user import UserFacade
+
+from .stubs import UserFacadeStub
 
 
-class TestApi:
+class TestApiGeneral:
     def test_should_fail_gracefully_when_domain_exception_is_thrown(
         self, client: TestClient, when: Callable[[Any], Any]
     ) -> None:
-        when(UserFacade).get_all().thenRaise(DomainException)
+        # NOTE: Any dependency could have been mocked or stubbed here.
+        # It's quirky, but gets the job done.
+        when(UserFacadeStub).get_all().thenRaise(DomainException)
 
         response = client.get("users/")
 
