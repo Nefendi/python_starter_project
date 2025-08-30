@@ -12,7 +12,7 @@ class UserFacade:
 
     @transactional
     def add(self, name: str, surname: str) -> UserDTO:
-        user = User(id=UserId.new_one(), name=name, surname=surname)
+        user = User(name=name, surname=surname)
 
         self._repository.add(user)
 
