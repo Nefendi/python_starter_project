@@ -10,7 +10,7 @@ from python_starter_project.user import UserFacade
 
 
 class TestApi:
-    def test_should_fail_gracefully_when_a_domain_exception_is_thrown(
+    def test_should_fail_gracefully_when_domain_exception_is_thrown(
         self, client: TestClient, when: Callable[[Any], Any]
     ) -> None:
         when(UserFacade).get_all().thenRaise(DomainException)

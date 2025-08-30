@@ -10,7 +10,7 @@ from fastapi.testclient import TestClient
 
 
 class TestUsers:
-    def test_should_be_able_to_get_a_created_user(self, client: TestClient) -> None:
+    def test_should_be_able_to_get_created_user(self, client: TestClient) -> None:
         response = client.post("users/", json={"name": "Vernon", "surname": "Vaughn"})
 
         assert_that(response.status_code).is_equal_to(status.HTTP_201_CREATED)
@@ -27,7 +27,7 @@ class TestUsers:
         assert_that(data["name"]).is_equal_to("Vernon")
         assert_that(data["surname"]).is_equal_to("Vaughn")
 
-    def test_should_be_able_to_see_a_created_user_in_a_list_of_all_users(
+    def test_should_be_able_to_see_created_user_in_list_of_all_users(
         self,
         client: TestClient,
     ) -> None:
@@ -45,7 +45,7 @@ class TestUsers:
         assert_that(response.headers["Content-Type"]).is_equal_to("application/json")
         assert_that({"id": id, "name": "Eric", "surname": "Evans"}).is_in(data)
 
-    def test_should_fail_gracefully_when_getting_a_user_who_does_not_exist(
+    def test_should_fail_gracefully_when_getting_user_who_does_not_exist(
         self,
         client: TestClient,
     ) -> None:
