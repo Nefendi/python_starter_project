@@ -3,10 +3,13 @@ from fastapi.responses import JSONResponse
 
 from python_starter_project.shared import DomainException
 
+from .ioc import container
 from .users import add_users_exception_handlers
 from .users import router as user_router
 
 app = FastAPI()
+
+app.state.container = container
 
 
 @app.exception_handler(DomainException)
