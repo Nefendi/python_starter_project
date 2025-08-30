@@ -9,7 +9,11 @@ class UserRepository(ABC):
         pass
 
     @abstractmethod
-    def get_by_id(self, id: UserId) -> User:
+    def update(self, user: User) -> None:
+        pass
+
+    @abstractmethod
+    def get_by_id(self, user_id: UserId) -> User:
         pass
 
     @abstractmethod

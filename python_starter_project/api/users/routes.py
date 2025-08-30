@@ -16,7 +16,7 @@ class UserBase(BaseModel):
     surname: str
 
 
-class UserIn(UserBase):
+class UserCreate(UserBase):
     pass
 
 
@@ -54,9 +54,22 @@ def get_all_users(
 
 @router.post("/", response_model=UserOut, status_code=status.HTTP_201_CREATED)
 def add_new_user(
-    payload: UserIn,
+    payload: UserCreate,
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
 ) -> UserDTO:
     new_user = user_facade.add(name=payload.name, surname=payload.surname)
 
     return new_user
+
+
+@router.put("/{id}", response_model=UserOut, status_code=status.HTTP_200_OK)
+def update_user(
+    payload: UserBase,
+    id: UUID,
+    user_facade: Annotated[UserFacade, Inject(UserFacade)],
+) -> UserDTO:
+    user = user_facade.update(
+        user_id=UserId(id), name=payload.name, surname=payload.surname
+    )
+
+    return user

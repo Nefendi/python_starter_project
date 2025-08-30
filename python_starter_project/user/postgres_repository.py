@@ -1,6 +1,6 @@
 from typing import override
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 from ..database import BaseRepository
 from .entity import User, UserId
@@ -18,13 +18,31 @@ class UserPostgresRepository(UserRepository, BaseRepository):
         self.session.flush([user_to_add])
 
     @override
-    def get_by_id(self, id: UserId) -> User:
-        stmt = select(UserModel).where(UserModel.id == id.as_uuid)
+    def update(self, user: User) -> None:
+        # NOTE: Could be simplified if the entity was an instance of an
+        # SQLAlchemy model, but I have separated those two things.
+        # This method would be redundant then, because the changes done
+        # on the model would automatically get persisted after a transaction
+        # has been committed.
+        user_to_update = self._entity_to_model(user)
+
+        stmt = (
+            update(UserModel)
+            .where(UserModel.id == user_to_update.id)
+            .values(name=user_to_update.name, surname=user_to_update.surname)
+        )
+
+        self.session.execute(stmt)
+        self.session.flush([user_to_update])
+
+    @override
+    def get_by_id(self, user_id: UserId) -> User:
+        stmt = select(UserModel).where(UserModel.id == user_id.as_uuid)
 
         retrieved_user = self.session.scalar(stmt)
 
         if not retrieved_user:
-            raise NoUserFoundException(id)
+            raise NoUserFoundException(user_id)
 
         return self._model_to_entity(retrieved_user)
 

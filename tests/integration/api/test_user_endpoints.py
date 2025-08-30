@@ -54,3 +54,27 @@ class TestUserEndpoints:
         assert_that(data[0]).contains("id")
         assert_that(data[0]["name"]).is_equal_to("Martin")
         assert_that(data[0]["surname"]).is_equal_to("Fowler")
+
+    def test_should_be_able_to_update_user(self, client: TestClient) -> None:
+        response = client.put(f"users/{uuid4()}", json={"name": "", "surname": ""})
+        data = response.json()
+
+        assert_that(response.status_code).is_equal_to(status.HTTP_200_OK)
+        assert_that(response.headers["Content-Type"]).is_equal_to("application/json")
+
+        assert_that(data).contains("id")
+        assert_that(data["name"]).is_equal_to("Martin")
+        assert_that(data["surname"]).is_equal_to("Fowler")
+
+    def test_should_fail_when_updating_user_that_does_not_exist(
+        self, client: TestClient
+    ) -> None:
+        response = client.put(
+            f"users/{NOT_EXISTENT_USER_ID.as_uuid}", json={"name": "", "surname": ""}
+        )
+        data = response.json()
+
+        assert_that(response.status_code).is_equal_to(status.HTTP_404_NOT_FOUND)
+        assert_that(response.headers["Content-Type"]).is_equal_to("application/json")
+
+        assert_that(data["message"]).is_equal_to("A user with this id does not exist")

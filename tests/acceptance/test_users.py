@@ -57,3 +57,26 @@ class TestUsers:
         assert_that(response.status_code).is_equal_to(status.HTTP_404_NOT_FOUND)
         assert_that(response.headers["Content-Type"]).is_equal_to("application/json")
         assert_that(data).is_equal_to({"message": "A user with this id does not exist"})
+
+    def test_should_be_able_update_already_existing_user(
+        self, client: TestClient
+    ) -> None:
+        response = client.post("users/", json={"name": "Vernon", "surname": "Vaughn"})
+
+        assert_that(response.status_code).is_equal_to(status.HTTP_201_CREATED)
+        assert_that(response.headers["Content-Type"]).is_equal_to("application/json")
+
+        data = response.json()
+        id = data["id"]
+
+        response = client.put(
+            f"users/{id}", json={"name": "Bjarne", "surname": "Stroustrup"}
+        )
+
+        data = response.json()
+
+        assert_that(response.status_code).is_equal_to(status.HTTP_200_OK)
+        assert_that(response.headers["Content-Type"]).is_equal_to("application/json")
+
+        assert_that(data["name"]).is_equal_to("Bjarne")
+        assert_that(data["surname"]).is_equal_to("Stroustrup")

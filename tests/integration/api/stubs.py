@@ -20,8 +20,15 @@ class UserFacadeStub(UserFacade):
         return self._user()
 
     @override
-    def get_by_id(self, id: UserId) -> UserDTO:
-        if id == NOT_EXISTENT_USER_ID:
+    def update(self, user_id: UserId, name: str, surname: str) -> UserDTO:
+        if user_id == NOT_EXISTENT_USER_ID:
+            raise NoUserFoundException(NOT_EXISTENT_USER_ID)
+
+        return self._user()
+
+    @override
+    def get_by_id(self, user_id: UserId) -> UserDTO:
+        if user_id == NOT_EXISTENT_USER_ID:
             raise NoUserFoundException(NOT_EXISTENT_USER_ID)
 
         return self._user()
