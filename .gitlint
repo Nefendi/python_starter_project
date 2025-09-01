@@ -1,0 +1,16 @@
+[general]
+ignore=body-is-missing
+
+[title-max-length]
+line-length=120
+
+[body-max-line-length]
+line-length=72
+
+[body-min-length]
+min-length=5
+
+; Enable if you want to look for a particular
+; regex in commit messages
+; [commit-message-match-regex]
+; regex=(proj|proj2)-\d+

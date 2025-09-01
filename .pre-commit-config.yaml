@@ -1,0 +1,88 @@
+---
+minimum_pre_commit_version: 3.8.0
+default_language_version:
+  python: python3.13
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+        types: [yaml]
+      - id: check-json
+        types: [json]
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args:
+          - --markdown-linebreak-ext=md
+      - id: check-ast
+        types: [python]
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+      - id: name-tests-test
+        exclude: "factories\\.py$|steps\\.py$|fixtures/|fixtures\\.py$|static/.*\\.py$|stubs\\.py$"
+        args:
+          - --pytest-test-first
+        types: [python]
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: uv run mypy
+        language: system
+        # Because of: https://github.com/python/mypy/issues/14521
+        require_serial: true
+        files: \.(py)$
+        exclude: extra/gitlint_rules/
+  - repo: local
+    hooks:
+      - id: ruff-format
+        name: ruff-format
+        entry: uv run ruff format --check --no-cache
+        language: system
+        types: [python]
+  - repo: local
+    hooks:
+      - id: ruff-lint
+        name: ruff-lint
+        entry: uv run ruff check --no-cache
+        language: system
+        types: [python]
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: python-no-eval
+      - id: python-check-blanket-noqa
+      - id: python-check-blanket-type-ignore
+      - id: python-use-type-annotations
+      - id: python-check-mock-methods
+  - repo: local
+    hooks:
+      - id: gitlint
+        name: gitlint
+        entry: uv run gitlint
+        language: system
+        args:
+          - --extra-path
+          - extra/gitlint_rules/
+          - --staged
+          - --msg-filename
+        stages:
+          - commit-msg
+  # For CI
+  # - repo: local
+  #   hooks:
+  #     - id: gitlint-ci
+  #       name: uv run gitlint
+  #       language: system
+  #       entry: gitlint
+  #       always_run: true
+  #       pass_filenames: false
+  #       args:
+  #         - --extra-path
+  #         - extra/gitlint_rules/
+  #       stages:
+  #         - manual
