@@ -8,7 +8,7 @@ from python_starter_project.user import UserDTO, UserFacade, UserId
 
 from ..ioc import Inject
 
-router = APIRouter(prefix="/users")
+router = APIRouter(prefix="/users", tags=["Users"])
 
 
 class UserBase(BaseModel):
@@ -43,7 +43,7 @@ def get_user_by_id(
     return user
 
 
-@router.get("/", response_model=list[UserOut], status_code=status.HTTP_200_OK)
+@router.get("", response_model=list[UserOut], status_code=status.HTTP_200_OK)
 def get_all_users(
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
 ) -> list[UserDTO]:
@@ -52,7 +52,7 @@ def get_all_users(
     return users
 
 
-@router.post("/", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=UserOut, status_code=status.HTTP_201_CREATED)
 def add_new_user(
     payload: UserCreate,
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
