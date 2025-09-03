@@ -12,10 +12,17 @@ from testcontainers.postgres import PostgresContainer
 from python_starter_project.api.main import app
 from python_starter_project.database import session_factory
 
+from .steps import Steps
+
 
 @pytest.fixture
 def client() -> TestClient:
     return TestClient(app)
+
+
+@pytest.fixture
+def steps(client: TestClient) -> Steps:
+    return Steps(client)
 
 
 # Stolen from: https://github.com/Enforcer/bottega-ddd-modulith/blob/main/tests/conftest.py
