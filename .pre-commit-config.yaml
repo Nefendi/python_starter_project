@@ -51,6 +51,13 @@ repos:
         entry: uv run ruff check --no-cache
         language: system
         types: [python]
+  - repo: local
+    hooks:
+      - id: tach
+        name: tach
+        entry: uv run tach check
+        language: system
+        pass_filenames: false
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.10.0
     hooks:
