@@ -10,9 +10,9 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-yaml
-        types: [yaml]
+        types: [file, yaml]
       - id: check-json
-        types: [json]
+        types: [file, json]
       - id: end-of-file-fixer
       - id: trailing-whitespace
         args:
@@ -26,12 +26,12 @@ repos:
         exclude: "factories\\.py$|steps\\.py$|fixtures/|fixtures\\.py$|static/.*\\.py$|stubs\\.py$"
         args:
           - --pytest-test-first
-        types: [python]
+        types: [file, python]
   - repo: local
     hooks:
       - id: mypy
         name: mypy
-        entry: uv run mypy
+        entry: mypy
         language: system
         # Because of: https://github.com/python/mypy/issues/14521
         require_serial: true
@@ -41,21 +41,23 @@ repos:
     hooks:
       - id: ruff-format
         name: ruff-format
-        entry: uv run ruff format --check --no-cache
+        entry: ruff format --check --no-cache --force-exclude
         language: system
-        types: [python]
+        require_serial: true
+        types: [file, python]
   - repo: local
     hooks:
       - id: ruff-lint
         name: ruff-lint
-        entry: uv run ruff check --no-cache
+        entry: ruff check --no-cache --force-exclude
         language: system
-        types: [python]
+        require_serial: true
+        types: [file, python]
   - repo: local
     hooks:
       - id: tach
         name: tach
-        entry: uv run tach check
+        entry: tach check
         language: system
         pass_filenames: false
   - repo: https://github.com/pre-commit/pygrep-hooks
@@ -70,7 +72,7 @@ repos:
     hooks:
       - id: gitlint
         name: gitlint
-        entry: uv run gitlint
+        entry: gitlint
         language: system
         args:
           - --extra-path
@@ -83,7 +85,7 @@ repos:
   # - repo: local
   #   hooks:
   #     - id: gitlint-ci
-  #       name: uv run gitlint
+  #       name: gitlint
   #       language: system
   #       entry: gitlint
   #       always_run: true
