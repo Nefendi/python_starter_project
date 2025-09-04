@@ -52,12 +52,28 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.ruff.lint]
-select = ["C", "E", "F", "W", "B", "B9", "PT", "I", "UP", "PL"]
+select = ["C", "E", "F", "W", "B", "PT", "I", "UP", "PL", "FAST"]
 ignore = [
   # whitespace before ':', non-compliant with PEP8 and Black
   "E203",
   # line length, ignored because B950 from flake8-bugbear takes care of that
   "E501",
+  # rules conflicting with ruff format
+  # https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
+  "W191",
+  "E111",
+  "E114",
+  "E117",
+  "D206",
+  "D300",
+  "Q000",
+  "Q001",
+  "Q002",
+  "Q003",
+  "COM812",
+  "COM819",
+  "ISC001",
+  "ISC002",
 ]
 
 [tool.ruff.lint.pycodestyle]
@@ -69,6 +85,7 @@ max-complexity = 12
 [tool.ruff.lint.per-file-ignores]
 "migrations/env.py" = ["F401"]
 "migrations/versions/*" = ["W291"]
+"__init__.py" = ["PLC0414"]
 
 [tool.mypy]
 show_column_numbers = true
