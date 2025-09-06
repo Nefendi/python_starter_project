@@ -4,6 +4,7 @@ from functools import wraps
 from types import TracebackType
 from typing import overload
 
+from sqlalchemy.engine.interfaces import IsolationLevel
 from sqlalchemy.orm import (
     Session,
     SessionTransaction,
@@ -15,13 +16,18 @@ _session_ctx_var: ContextVar[Session | None] = ContextVar(
     "_session_ctx_var", default=None
 )
 
+ENGINE_DEFAULT = None
+
+type _IsolationLevel = IsolationLevel | None
+
 
 class _TransactionHelper:
     _session: Session
     _savepoint: SessionTransaction
     _is_nested: bool
+    _isolation_level: _IsolationLevel
 
-    def __init__(self) -> None:
+    def __init__(self, isolation_level: _IsolationLevel) -> None:
         session = _session_ctx_var.get()
 
         if session is None:
@@ -30,6 +36,7 @@ class _TransactionHelper:
 
         self._session = session
         self._is_nested = session.in_transaction()
+        self._isolation_level = isolation_level
 
     def __enter__(self) -> Session | SessionTransaction:
         if self._is_nested:
@@ -37,6 +44,12 @@ class _TransactionHelper:
             return self._savepoint
         else:
             self._session.begin()
+
+            if self._isolation_level is not ENGINE_DEFAULT:
+                self._session.connection(
+                    execution_options={"isolation_level": self._isolation_level}
+                )
+
             return self._session
 
     def __exit__(
@@ -73,11 +86,13 @@ def transactional[ReturnType, **Params](
 @overload
 def transactional[ReturnType, **Params](
     func: None = ...,
+    isolation_level: _IsolationLevel = ENGINE_DEFAULT,
 ) -> Callable[[Callable[Params, ReturnType]], Callable[Params, ReturnType]]: ...
 
 
 def transactional[ReturnType, **Params](
     func: Callable[Params, ReturnType] | None = None,
+    isolation_level: _IsolationLevel = ENGINE_DEFAULT,
 ) -> (
     Callable[[Callable[Params, ReturnType]], Callable[Params, ReturnType]]
     | Callable[Params, ReturnType]
@@ -87,7 +102,7 @@ def transactional[ReturnType, **Params](
     ) -> Callable[Params, ReturnType]:
         @wraps(func)
         def wrapper(*args: Params.args, **kwargs: Params.kwargs) -> ReturnType:
-            with _TransactionHelper():
+            with _TransactionHelper(isolation_level=isolation_level):
                 return func(*args, **kwargs)
 
         return wrapper

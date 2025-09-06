@@ -3,7 +3,7 @@ from .db import Base, get_session, mapper_registry, metadata, session_factory
 from .embedded_uuid import EmbeddedUUID
 from .extensions import TimestampsMixin, timestamps
 from .settings import DbSettings
-from .transaction import transactional
+from .transaction import ENGINE_DEFAULT, transactional
 
 __all__ = [
     "get_session",
@@ -17,4 +17,5 @@ __all__ = [
     "metadata",
     "EmbeddedUUID",
     "timestamps",
+    "ENGINE_DEFAULT",
 ]
