@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from contextvars import ContextVar
+from contextvars import ContextVar, Token
 from functools import wraps
 from types import TracebackType
 from typing import overload
@@ -26,13 +26,14 @@ class _TransactionHelper:
     _savepoint: SessionTransaction
     _is_nested: bool
     _isolation_level: _IsolationLevel
+    _token: Token[Session | None]
 
     def __init__(self, isolation_level: _IsolationLevel) -> None:
         session = _session_ctx_var.get()
 
         if session is None:
             session = get_session()
-            _session_ctx_var.set(session)
+            self._token = _session_ctx_var.set(session)
 
         self._session = session
         self._is_nested = session.in_transaction()
@@ -74,7 +75,7 @@ class _TransactionHelper:
             self._session.close()
 
         if not self._is_nested:
-            _session_ctx_var.set(None)
+            _session_ctx_var.reset(self._token)
 
 
 @overload
