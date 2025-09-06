@@ -8,18 +8,19 @@ from attrs import define, frozen
 
 @frozen
 class UserId:
-    _id: UUID
+    uuid: UUID
 
     @property
     def as_uuid(self) -> UUID:
-        return self._id
+        return self.uuid
 
     @staticmethod
     def new_one() -> UserId:
         return UserId(uuid4())
 
 
-@define
+# INFO: slots=False is needed for SQLAlchemy's imperative mapping
+@define(slots=False)
 class User:
     name: str
     surname: str

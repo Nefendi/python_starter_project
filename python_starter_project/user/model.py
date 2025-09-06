@@ -1,14 +1,27 @@
-from uuid import UUID
+from sqlalchemy import Column, String, Table
 
-from sqlalchemy.dialects.postgresql import UUID as PSQL_UUID
-from sqlalchemy.orm import Mapped, mapped_column
+from python_starter_project.database import (
+    EmbeddedUUID,
+    mapper_registry,
+    metadata,
+    timestamps,
+)
 
-from python_starter_project.database import Base, TimestampsMixin
+from .entity import User, UserId
 
+# NOTE: Imperative mapping
+# It suits DDD more, because we keep the domain model pure and
+# we still can make use of SQLAlchemy's Unit of Work pattern.
+# For simpler cases, when it is not that important to keep the domain model
+# pure, declarative mapping should be used as it produces cleaner and shorter
+# code, since there is only one class per database table.
+users = Table(
+    "users",
+    metadata,
+    Column("id", EmbeddedUUID[UserId], primary_key=True),
+    Column("name", String(), nullable=False),
+    Column("surname", String(), nullable=False),
+    *timestamps,
+)
 
-class UserModel(Base, TimestampsMixin):
-    __tablename__ = "users"
-
-    id: Mapped[UUID] = mapped_column(PSQL_UUID(as_uuid=True), primary_key=True)
-    name: Mapped[str]
-    surname: Mapped[str]
+mapper_registry.map_imperatively(User, users, properties={"_id": users.c.id})
