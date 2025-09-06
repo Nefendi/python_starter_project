@@ -35,7 +35,7 @@ repos:
         language: system
         # Because of: https://github.com/python/mypy/issues/14521
         require_serial: true
-        files: \.(py)$
+        types_or: [python, pyi]
         exclude: extra/gitlint_rules/
   - repo: local
     hooks:
