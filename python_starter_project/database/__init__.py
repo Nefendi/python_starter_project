@@ -1,6 +1,7 @@
 from .base_repository import BaseRepository
-from .db import Base, get_session, session_factory
-from .mixins import TimestampsMixin
+from .db import Base, get_session, mapper_registry, metadata, session_factory
+from .embedded_uuid import EmbeddedUUID
+from .extensions import TimestampsMixin, timestamps
 from .settings import DbSettings
 from .transaction import transactional
 
@@ -12,4 +13,8 @@ __all__ = [
     "transactional",
     "session_factory",
     "TimestampsMixin",
+    "mapper_registry",
+    "metadata",
+    "EmbeddedUUID",
+    "timestamps",
 ]

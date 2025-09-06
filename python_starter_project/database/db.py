@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import (
     DeclarativeBase,
     Session,
+    registry,
     sessionmaker,
 )
 
@@ -21,3 +22,8 @@ def get_session() -> Session:
 
 class Base(DeclarativeBase):
     pass
+
+
+metadata = Base.metadata
+
+mapper_registry = registry(metadata=metadata)
