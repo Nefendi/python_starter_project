@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import override
 from uuid import UUID, uuid4
 
@@ -24,11 +25,21 @@ class UserId:
 class User:
     name: str
     surname: str
+    date_of_birth: date
     _id: UserId = UserId.new_one()
 
     @property
     def id(self) -> UserId:
         return self._id
+
+    @property
+    def age(self) -> int:
+        today = date.today()
+        born = self.date_of_birth
+
+        return (
+            today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+        )
 
     @override
     def __eq__(self, other: object) -> bool:

@@ -1,3 +1,5 @@
+from datetime import date
+
 from attrs import define
 
 from ..database import transactional
@@ -11,8 +13,8 @@ class UserFacade:
     _repository: UserRepository
 
     @transactional
-    def add(self, name: str, surname: str) -> UserDTO:
-        user = User(name=name, surname=surname)
+    def add(self, name: str, surname: str, date_of_birth: date) -> UserDTO:
+        user = User(name=name, surname=surname, date_of_birth=date_of_birth)
 
         self._repository.add(user)
 
