@@ -16,16 +16,16 @@ api:
     uv run -- fastapi dev python_starter_project/api/main.py
 
 test_all:
-    uv run pytest
+    uv run pytest -n auto
 
 test_fast:
-    uv run pytest -m "not slow"
+    uv run pytest -m "not slow" -n auto
 
 test_slow:
-    uv run pytest -m slow
+    uv run pytest -m slow -n auto
 
 coverage:
-    uv run pytest --cov --cov-report term --cov-report html
+    uv run pytest --cov --cov-report term --cov-report html -n auto
 
 html:
     xdg-open htmlcov/index.html

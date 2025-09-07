@@ -32,7 +32,7 @@ dev = [
   "factory-boy>=3.2.1,<4",
   "coverage[toml]>=7.2.7,<8",
   "hypothesis>=6.80.0,<7",
-  "mutmut>=2.4.3,<3",
+  "mutmut>=3.3.1,<4",
   "gitlint>=0.19.1,<0.20",
   "pytest-bdd>=6.1.1,<7",
   "pytest-asyncio>=0.21.0,<0.22",
@@ -92,6 +92,7 @@ show_column_numbers = true
 pretty = true
 strict = true
 plugins = ["pydantic.mypy"]
+exclude = ["mutants/", "extra/"]
 
 [[tool.mypy.overrides]]
 module = ["assertpy.*", "factory.*", "testcontainers.*"]
@@ -104,8 +105,20 @@ warn_required_dynamic_aliases = true
 warn_untyped_fields = true
 
 [tool.pytest.ini_options]
-addopts = "--strict-markers -n auto"
+addopts = "--strict-markers --ignore=mutants"
 markers = ["slow: marks test as slow"]
+
+[tool.mutmut]
+paths_to_mutate = ["python_starter_project/"]
+tests_dir = ["tests/"]
+also_copy = ["migrations/"]
+do_not_mutate = [
+  "python_starter_project/container.py",
+  "python_starter_project/api/ioc.py",
+  "python_starter_project/shared/specification.py",
+  "python_starter_project/*/exceptions.py",
+  "python_starter_project/database/transaction.py",
+]
 
 [tool.coverage.report]
 exclude_lines = ["@abstractmethod", "@abc.abstractmethod"]
@@ -114,7 +127,7 @@ show_missing = true
 [tool.coverage.run]
 branch = true
 source = ["python_starter_project/"]
-omit = ["*/database/*"]
+omit = ["*/database/*", "mutants/"]
 
 [tool.alembic]
 script_location = "%(here)s/migrations"
