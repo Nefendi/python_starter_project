@@ -5,6 +5,7 @@ from .facade import UserFacade
 from .model import users
 from .postgres_repository import UserPostgresRepository
 from .repository import UserRepository
+from .specifications import IsAdultSpecification
 
 __all__ = [
     "User",
@@ -15,4 +16,5 @@ __all__ = [
     "NoUserFoundException",
     "UserId",
     "UserDTO",
+    "IsAdultSpecification",
 ]
