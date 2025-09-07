@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Table
+from sqlalchemy import Column, Date, String, Table
 
 from python_starter_project.database import (
     EmbeddedUUID,
@@ -21,6 +21,7 @@ users = Table(
     Column("id", EmbeddedUUID[UserId], primary_key=True),
     Column("name", String(), nullable=False),
     Column("surname", String(), nullable=False),
+    Column("date_of_birth", Date(), nullable=False),
     *timestamps,
 )
 
