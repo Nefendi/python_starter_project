@@ -1,3 +1,4 @@
+from datetime import date
 from typing import override
 from uuid import uuid4
 
@@ -16,7 +17,7 @@ NOT_EXISTENT_USER_ID = UserId.new_one()
 # decorator underneath
 class UserFacadeStub(UserFacade):
     @override
-    def add(self, name: str, surname: str) -> UserDTO:
+    def add(self, name: str, surname: str, date_of_birth: date) -> UserDTO:
         return self._user()
 
     @override
@@ -38,4 +39,4 @@ class UserFacadeStub(UserFacade):
         return [self._user()]
 
     def _user(self) -> UserDTO:
-        return UserDTO(id=uuid4(), name="Martin", surname="Fowler")
+        return UserDTO(id=uuid4(), name="Martin", surname="Fowler", age=25)
