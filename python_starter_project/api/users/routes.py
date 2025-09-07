@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Annotated
 from uuid import UUID
 
@@ -17,13 +18,14 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    pass
+    date_of_birth: date
 
 
 class UserOut(UserBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
+    age: int
 
 
 @router.get(
@@ -57,7 +59,9 @@ def add_new_user(
     payload: UserCreate,
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
 ) -> UserDTO:
-    new_user = user_facade.add(name=payload.name, surname=payload.surname)
+    new_user = user_facade.add(
+        name=payload.name, surname=payload.surname, date_of_birth=payload.date_of_birth
+    )
 
     return new_user
 
