@@ -1,8 +1,9 @@
+import enum
 from collections.abc import Callable
 from contextvars import ContextVar, Token
 from functools import wraps
 from types import TracebackType
-from typing import overload
+from typing import overload, override
 
 from sqlalchemy.engine.interfaces import IsolationLevel
 from sqlalchemy.orm import (
@@ -16,9 +17,22 @@ _session_ctx_var: ContextVar[Session | None] = ContextVar(
     "_session_ctx_var", default=None
 )
 
-ENGINE_DEFAULT = None
 
-type _IsolationLevel = IsolationLevel | None
+class _EngineDefault(enum.Enum):
+    """
+    Sentinel to indicate the lack of a value when `None` is ambiguous.
+    """
+
+    ENGINE_DEFAULT = enum.auto()
+
+    @override
+    def __repr__(self) -> str:
+        return "ENGINE_DEFAULT"
+
+
+ENGINE_DEFAULT = _EngineDefault.ENGINE_DEFAULT
+
+type _IsolationLevel = IsolationLevel | _EngineDefault
 
 
 class _TransactionHelper:
