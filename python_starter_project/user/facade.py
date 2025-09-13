@@ -13,16 +13,16 @@ class UserFacade:
     _repository: UserRepository
 
     @transactional
-    def add(self, name: str, surname: str, date_of_birth: date) -> UserDTO:
+    async def add(self, name: str, surname: str, date_of_birth: date) -> UserDTO:
         user = User(name=name, surname=surname, date_of_birth=date_of_birth)
 
-        self._repository.add(user)
+        await self._repository.add(user)
 
         return UserDTO.of(user)
 
     @transactional
-    def update(self, user_id: UserId, name: str, surname: str) -> UserDTO:
-        user = self._repository.get_by_id(user_id)
+    async def update(self, user_id: UserId, name: str, surname: str) -> UserDTO:
+        user = await self._repository.get_by_id(user_id)
 
         user.name = name
         user.surname = surname
@@ -30,9 +30,9 @@ class UserFacade:
         return UserDTO.of(user)
 
     @transactional
-    def get_by_id(self, user_id: UserId) -> UserDTO:
-        return UserDTO.of(self._repository.get_by_id(user_id=user_id))
+    async def get_by_id(self, user_id: UserId) -> UserDTO:
+        return UserDTO.of(await self._repository.get_by_id(user_id=user_id))
 
     @transactional
-    def get_all(self) -> list[UserDTO]:
-        return [UserDTO.of(user) for user in self._repository.get_all()]
+    async def get_all(self) -> list[UserDTO]:
+        return [UserDTO.of(user) for user in await self._repository.get_all()]

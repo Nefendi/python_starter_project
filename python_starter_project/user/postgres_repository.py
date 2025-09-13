@@ -11,15 +11,15 @@ from .repository import UserRepository
 
 class UserPostgresRepository(UserRepository, BaseRepository):
     @override
-    def add(self, user: User) -> None:
+    async def add(self, user: User) -> None:
         self.session.add(user)
-        self.session.flush([user])
+        await self.session.flush([user])
 
     @override
-    def get_by_id(self, user_id: UserId) -> User:
+    async def get_by_id(self, user_id: UserId) -> User:
         stmt = select(User).where(users.c.id == user_id)
 
-        retrieved_user = self.session.scalar(stmt)
+        retrieved_user = await self.session.scalar(stmt)
 
         if not retrieved_user:
             raise NoUserFoundException(user_id)
@@ -27,9 +27,9 @@ class UserPostgresRepository(UserRepository, BaseRepository):
         return retrieved_user
 
     @override
-    def get_all(self) -> list[User]:
+    async def get_all(self) -> list[User]:
         stmt = select(User)
 
-        retrieved_users = self.session.scalars(stmt).all()
+        retrieved_users = await self.session.scalars(stmt)
 
-        return list(retrieved_users)
+        return list(retrieved_users.all())

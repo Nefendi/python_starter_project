@@ -36,30 +36,30 @@ class UserOut(UserBase):
         status.HTTP_404_NOT_FOUND: {"description": "The user has not been found"}
     },
 )
-def get_user_by_id(
+async def get_user_by_id(
     id: UUID,
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
 ) -> UserDTO:
-    user = user_facade.get_by_id(UserId(id))
+    user = await user_facade.get_by_id(UserId(id))
 
     return user
 
 
 @router.get("", response_model=list[UserOut], status_code=status.HTTP_200_OK)
-def get_all_users(
+async def get_all_users(
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
 ) -> list[UserDTO]:
-    users = user_facade.get_all()
+    users = await user_facade.get_all()
 
     return users
 
 
 @router.post("", response_model=UserOut, status_code=status.HTTP_201_CREATED)
-def add_new_user(
+async def add_new_user(
     payload: UserCreate,
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
 ) -> UserDTO:
-    new_user = user_facade.add(
+    new_user = await user_facade.add(
         name=payload.name, surname=payload.surname, date_of_birth=payload.date_of_birth
     )
 
@@ -67,12 +67,12 @@ def add_new_user(
 
 
 @router.put("/{id}", response_model=UserOut, status_code=status.HTTP_200_OK)
-def update_user(
+async def update_user(
     payload: UserBase,
     id: UUID,
     user_facade: Annotated[UserFacade, Inject(UserFacade)],
 ) -> UserDTO:
-    user = user_facade.update(
+    user = await user_facade.update(
         user_id=UserId(id), name=payload.name, surname=payload.surname
     )
 

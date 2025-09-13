@@ -5,13 +5,13 @@ from .entity import User, UserId
 
 class UserRepository(ABC):
     @abstractmethod
-    def add(self, user: User) -> None:
+    async def add(self, user: User) -> None:
         pass
 
     @abstractmethod
-    def get_by_id(self, user_id: UserId) -> User:
+    async def get_by_id(self, user_id: UserId) -> User:
         pass
 
     @abstractmethod
-    def get_all(self) -> list[User]:
+    async def get_all(self) -> list[User]:
         pass

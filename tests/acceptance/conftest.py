@@ -1,12 +1,14 @@
 import os
 import pathlib
-from collections.abc import Iterator
+from collections.abc import AsyncIterator
 
 import alembic.command
 import alembic.config
 import pytest
+import pytest_asyncio
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import Connection
+from sqlalchemy.ext.asyncio import create_async_engine
 from testcontainers.postgres import PostgresContainer
 
 from python_starter_project.api.main import app
@@ -27,19 +29,20 @@ def steps(client: TestClient) -> Steps:
 
 # Stolen from: https://github.com/Enforcer/bottega-ddd-modulith/blob/main/tests/conftest.py
 # WARN: This setup work probably only for Postgres. You need to adjust it for different databases
-@pytest.fixture(autouse=True)
-def _setup_test_database() -> Iterator[None]:
+@pytest_asyncio.fixture(autouse=True)
+async def _setup_test_database() -> AsyncIterator[None]:
     with PostgresContainer(
         image="postgres:15",
         port=5432,
         user="python_starter_project",
         password="password",
+        driver="psycopg",
     ) as postgres:
-        test_db_engine = create_engine(postgres.get_connection_url(), echo=True)
+        test_db_engine = create_async_engine(postgres.get_connection_url(), echo=True)
 
         session_factory.configure(bind=test_db_engine)
 
-        with test_db_engine.begin():
+        async with test_db_engine.begin() as conn:
             testing_db_url = test_db_engine.url
 
             password = testing_db_url.password if testing_db_url.password else ""
@@ -57,9 +60,14 @@ def _setup_test_database() -> Iterator[None]:
 
             config.set_main_option("script_location", str(script_location))
 
-            alembic.command.upgrade(config=config, revision="head")
+            await conn.run_sync(_execute_upgrade, config)
 
-            yield
+        yield
+
+
+def _execute_upgrade(connection: Connection, config: alembic.config.Config) -> None:
+    config.attributes["connection"] = connection
+    alembic.command.upgrade(config=config, revision="head")
 
 
 # Stolen from: https://github.com/Enforcer/bottega-ddd-modulith/blob/main/tests/conftest.py

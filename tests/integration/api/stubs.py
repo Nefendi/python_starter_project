@@ -17,25 +17,25 @@ NOT_EXISTENT_USER_ID = UserId.new_one()
 # decorator underneath
 class UserFacadeStub(UserFacade):
     @override
-    def add(self, name: str, surname: str, date_of_birth: date) -> UserDTO:
+    async def add(self, name: str, surname: str, date_of_birth: date) -> UserDTO:
         return self._user()
 
     @override
-    def update(self, user_id: UserId, name: str, surname: str) -> UserDTO:
+    async def update(self, user_id: UserId, name: str, surname: str) -> UserDTO:
         if user_id == NOT_EXISTENT_USER_ID:
             raise NoUserFoundException(NOT_EXISTENT_USER_ID)
 
         return self._user()
 
     @override
-    def get_by_id(self, user_id: UserId) -> UserDTO:
+    async def get_by_id(self, user_id: UserId) -> UserDTO:
         if user_id == NOT_EXISTENT_USER_ID:
             raise NoUserFoundException(NOT_EXISTENT_USER_ID)
 
         return self._user()
 
     @override
-    def get_all(self) -> list[UserDTO]:
+    async def get_all(self) -> list[UserDTO]:
         return [self._user()]
 
     def _user(self) -> UserDTO:
