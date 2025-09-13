@@ -4,7 +4,7 @@ from datetime import date
 from typing import override
 from uuid import UUID, uuid4
 
-from attrs import define, frozen
+from attrs import Factory, define, frozen
 
 
 @frozen
@@ -26,7 +26,7 @@ class User:
     name: str
     surname: str
     date_of_birth: date
-    _id: UserId = UserId.new_one()
+    _id: UserId = Factory(UserId.new_one)
 
     @property
     def id(self) -> UserId:
