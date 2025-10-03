@@ -105,6 +105,7 @@ warn_required_dynamic_aliases = true
 warn_untyped_fields = true
 
 [tool.pytest.ini_options]
+pythonpath = "."
 addopts = "--strict-markers --ignore=mutants"
 markers = ["slow: marks test as slow"]
 
